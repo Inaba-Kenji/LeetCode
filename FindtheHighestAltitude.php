@@ -6,10 +6,21 @@
 class Solution {
 
   /**
-   * @param Integer[] $gain
-   * @return Integer
+   * @param int[] $gain
+   * @return int
    */
   function largestAltitude($gain) {
+    $preAltitude = 0;
+    array_unshift($gain, 0);
 
+    for ($i = 1; $i < count($gain); $i++) {
+      $gain[$i] = $preAltitude + $gain[$i];
+      $preAltitude = $gain[$i];
+    }
+    return max($gain);
   }
 }
+
+$solution = new Solution;
+$gain = [-5,1,5,0,-7];
+var_dump($solution->largestAltitude($gain));
