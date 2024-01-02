@@ -8,15 +8,20 @@ class Solution {
    * @return Boolean
    */
   function uniqueOccurrences($arr) {
-    $arr = array_count_values($arr);
-    $uniqueArr = array_unique($arr);
-    if (count($arr) == count($uniqueArr)) {
-      return true;
+    $dic = [];
+
+    foreach ($arr as $val) {
+      if (isset($dic[$val])) {
+        $dic[$val]++;
+      } else {
+        $dic[$val] = 1;
+      }
     }
-    return false;
+
+    return count(array_unique($arr)) == count(array_unique($dic));
   }
 }
 
 $solution = new Solution;
-$arr = [1,2];
+$arr = [1,2,2,1,1,3];
 var_dump($solution->uniqueOccurrences($arr));
