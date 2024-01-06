@@ -13,12 +13,26 @@
 // It can be shown that the resulting string will always be unique.
 
 class Solution {
-
   /**
    * @param String $s
    * @return String
    */
   function removeStars($s) {
+    $stack = [];
 
+    for ($i = 0; $i < strlen($s); $i++) {
+      if ($s[$i] == '*' && !empty($stack)) {
+        array_pop($stack);
+      } else {
+        array_push($stack, $s[$i]);
+      }
+    }
+
+    return implode("", $stack);
   }
 }
+
+$solution = new Solution;
+$inputString = "leet**cod*e";
+$outputString = $solution->removeStars($inputString);
+echo $outputString;
