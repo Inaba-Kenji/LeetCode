@@ -18,6 +18,40 @@ class Solution {
    * @return String
    */
   function predictPartyVictory($senate) {
+    $rad = new SplQueue;
+    $dir = new SplQueue;
+    $n = strlen($senate);
 
+    for ($i = 0; $i < $n; $i++) {
+      if ($senate[$i] == "R") {
+        $rad->enqueue($i);
+      } else {
+        $dir->enqueue($i);
+      }
+    }
+
+    while (!$rad->isEmpty() && !$dir->isEmpty()) {
+      if ($rad->bottom() < $dir->bottom()) {
+        $rad->enqueue($n++);
+      } else {
+        $dir->enqueue($n++);
+      }
+      $rad->dequeue();
+      $dir->dequeue();
+    }
+
+    return ($rad->isEmpty()) ? "Dire" : "Radiant";
   }
 }
+
+$solution = new Solution;
+$senate = "RDDDRDRRDR";
+$result = $solution->predictPartyVictory($senate);
+var_dump($result);
+
+// なぜ勝者が列の最後尾に？
+// 投票は双方が最も最適な戦略を実行するように行われるので、すでに投票した議員はそのラウンドでは相手チームにとって問題にならない。
+// つまり、すでに動いた議員を排除するのではなく、次に投票権を持つ議員を排除することが、各チームにとって最善の策となる。
+// 投票した議員を最後に配置すればよいので、これはキュー方式と完璧に連動する。
+
+// 勝利の宣言をするには同じチームの人がだけが残らないとダメだから、すでに投票した人は後回しで相手の一番投票権が近い奴と勝負することが最善策だと考えられる
