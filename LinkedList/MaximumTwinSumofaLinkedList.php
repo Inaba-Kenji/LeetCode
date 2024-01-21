@@ -6,25 +6,52 @@
 
 // Given the head of a linked list with even length, return the maximum twin sum of the linked list.
 
-/**
- * Definition for a singly-linked list.
- * class ListNode {
- *     public $val = 0;
- *     public $next = null;
- *     function __construct($val = 0, $next = null) {
- *         $this->val = $val;
- *         $this->next = $next;
- *     }
- * }
- */
+class ListNode {
+  public $val = 0;
+  public $next = null;
+  function __construct($val = 0, $next = null) {
+      $this->val = $val;
+      $this->next = $next;
+  }
+}
 
 class Solution {
-
   /**
    * @param ListNode $head
    * @return Integer
    */
   function pairSum($head) {
+      $n=0;
+      $aux=$head;
 
+      // 単一方法リストの数をカウントする
+      while($aux){
+          $n++;
+          $aux=$aux->next;
+      }
+
+      $hm=array();
+
+      // twinの前半の値を取得する
+      // indexを後半のtwinの値に設定してある
+      for ($i = 0; $i < $n/2; $i++) {
+          $hm[$n-1-$i]=$head->val;
+          $head=$head->next;
+      }
+
+      // 初期値はtwinの後半からスタートするようにする
+      // twinの合計を計算する
+      for ($i; $i<$n;$i++){
+          $hm[$i]=$hm[$i]+$head->val;
+          $head=$head->next;
+      }
+
+      return max($hm);
   }
 }
+
+$solution = new Solution;
+$head = new ListNode(5, new ListNode(4, new ListNode(2, new ListNode(1))));
+$result = $solution->pairSum($head);
+var_dump($result);
+exit;
